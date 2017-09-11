@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>index</title>
+    <script src="./imageData.js"></script>
+    <script src="./style.js"></script>
+  </head>
+  <body>
+    <div>
+      <label>设置显示样式</label>
+      <label>图片宽度:</label>
+      <input type="text" name="imageWidth" id="imageWidth">
+      <label>图片高度:</label>
+      <input type="text" name="imageHeight" id="imageHeight">
+      <input type="submit" value="确定" onclick="clickToChangeImageSize()">            
+      <button onclick="clickToRow()">行列</button>
+      <button onclick="clickToCol()">阵列</button>
+      <button onclick="clickToSetBgBlack()">黑色背景</button>
+      <button onclick="clickToSetBgWhite()">白色背景</button>
+    </div>
+    <div id="main" class="bgBlack"></div>
+  </body>
+  <script type="text/javascript">
+    var main = document.getElementById('main');
+    var data = imageData["data"];
+    var isColMode = true;
+    renderContent();
+
+    function renderContent() {
+      main.innerHTML = "";
+      if (isColMode) {
+        addContentByCol(data);
+      }else{
+        addContentByRow(data);
+      }
+    }
+
+    function addContentByCol(mData) {
+      for (var i = 0; i < mData.length; i++) {
+        var item = mData[i];
+        var colItem = getItem(i,item);
+        main.appendChild(colItem);
+      }
+    }
+
+    function getItem(index,item) {
+      var a = document.createElement("a");
+      a.href = "./detail.html?"+index;
+
+      var img = document.createElement("img");
+      img.src = item["path"];
+      img.height = imageHeight;
+      img.width = imageWidth;
+      img.className = "colItem";
+      a.appendChild(img);
+
+      return a;
+    }
+
+    function addContentByRow(mData) {
+      for (var index = 0; index < mData.length; index++) {
+        var item = mData[index];
+        var cell = getCell(index,item);
+        main.appendChild(cell);
+      }
+    }
+
+    function getCell(index,item) {
+      var div = document.createElement("div");
+
+      var a = document.createElement("a");
+      a.href = "./detail.html?"+index;
+      var img = document.createElement("img");
+      img.src = item["path"];
+      img.height = imageHeight;
+      img.width = imageWidth;
+      a.appendChild(img);
+      div.appendChild(a);
+
+      var labName = document.createElement("label");
+      labName.innerText = item["name"];
+      labName.className = "labName";
+      div.appendChild(labName);
+
+      var labSize = document.createElement("label");
+      labSize.className = "labSize";
+      var arrSize = item["size"];
+      labSize.innerText = arrSize[0]+"*"+arrSize[1];
+      div.appendChild(labSize);
+
+      var labPath = document.createElement("label");
+      labPath.innerText = item["path"];
+      labPath.className = "labPath";
+      div.appendChild(labPath);
+
+      div.appendChild
+
+      return div;
+    }
+
+    function clickToCol(params) {
+      isColMode = true;
+      renderContent();
+    }
+
+    function clickToRow(params) {
+      isColMode = false;
+      renderContent();
+    }
+
+    function clickToChangeImageSize(params) {
+
+      var strImageWidth = document.getElementById("imageWidth").value;
+      var strImageHeight = document.getElementById("imageHeight").value;
+      if (strImageWidth.length < 1) {
+        alert("请输入合法的宽度值");
+        return;
+      }
+      if (strImageHeight.length < 1) {
+        alert("请输入合法的高度值");
+        return;
+      }
+      imageWidth = strImageWidth;
+      imageHeight = strImageHeight;
+
+      renderContent();
+    }
+
+    function clickToSetBgBlack() {
+      main.className = "bgBlack"; 
+    }
+
+    function clickToSetBgWhite() {
+      main.className = "bgWhite";
+    }
+    
+  </script>
+  <style>
+    div.bgBlack {
+      background-color: black;
+    }
+    div.bgWhite {
+      background-color: white;
+    }
+    img.colItem {
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    label.labName {
+      font-size: 14px;
+      color: red;
+    }
+    label.labSize {
+      font-size: 14px;
+      color: red;
+      margin-left: 20px;
+    }
+    label.labPath {
+      font-size: 10px;
+      color: blue;
+      margin-left: 20px;
+    }
+  </style>
+</html>

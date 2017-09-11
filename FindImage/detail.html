@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>img detail</title>
+    <script src="./imageData.js"></script>
+    <script src="./style.js"></script>
+  </head>
+  <body>
+    <label>设置显示样式</label>
+    <button onclick="clickToSetBgBlack()">黑色背景</button>
+    <button onclick="clickToSetBgWhite()">白色背景</button>
+    <div id="main" class="bg"></div>
+  </body>
+  <script type="text/javascript">
+    var index = getIdFromHref(window.location.href);
+    var main = document.getElementById('main');
+    var data = imageData["data"];
+    var item = data[index];
+    addContent(item);
+
+    function getIdFromHref(href) {
+        var args = href.split("?");
+        return args[1];
+    }
+    function addContent(item) {
+        var img = document.createElement("img");
+        img.src = item["path"];
+        var div = document.createElement("div");
+        div.id = "imgBg";
+        div.className = "imgBgBlack";
+        div.appendChild(img);
+        main.appendChild(div);
+
+        var labName = document.createElement("label");
+        labName.innerText = item["name"];
+        labName.className = "labName";
+        main.appendChild(labName);
+
+        var labSize = document.createElement("label");
+        labSize.className = "labSize";
+        var arrSize = item["size"];
+        labSize.innerText = arrSize[0]+"*"+arrSize[1];
+        main.appendChild(labSize);
+
+        var labPath = document.createElement("label");
+        labPath.innerText = item["path"];
+        labPath.className = "labPath";
+        main.appendChild(labPath);
+    }
+    function clickToSetBgBlack() {
+      document.getElementById("imgBg").className = "imgBgBlack"; 
+    }
+
+    function clickToSetBgWhite() {
+        document.getElementById("imgBg").className = "imgBgWhite"; 
+    }
+  </script>
+  <style>
+    div.imgBgBlack {
+        background-color: black;
+    }
+    div.imgBgWhite {
+        background-color: white;
+    }
+    img {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    label.labName {
+      font-size: 14px;
+      color: red;
+    }
+    label.labSize {
+      font-size: 14px;
+      color: red;
+      margin-left: 20px;
+    }
+    label.labPath {
+      font-size: 10px;
+      color: blue;
+      margin-left: 20px;
+    }
+  </style>
+</html>
